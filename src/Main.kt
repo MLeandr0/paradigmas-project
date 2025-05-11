@@ -6,37 +6,15 @@ import models.VerticalFarmManager
 import java.time.LocalDate
 
 fun main() {
+    val ar = AeroponicBed("A-01", LocalDate.now())
+    val agua = HydroponicTower("W-01", LocalDate.now(), 120)
+    val soil = SoilGrowTable("S-01", LocalDate.now(), "Vermiculite")
 
-//    val aeroBed = AeroponicBed("I-32", LocalDate.now())
-//    println(aeroBed.idealConditions + " " + aeroBed.getMistingInterval() + " "+ aeroBed.getDaysSinceMaintenance())
-//    println("Condições ideias: " + aeroBed.idealConditions)
-//    println("Intervalo de névoa: " + aeroBed.getMistingInterval())
-//    println("Ultima manutenção: " + aeroBed.getDaysSinceMaintenance())
-//    aeroBed.setMistingInterval(10)
-//    //aeroBed.harvest()
-//    aeroBed.adjustEnvironment(22.0f, 2.1f)
-//
-//    val hydroTower = HydroponicTower("I-32", LocalDate.now(), 120)
-//
-//    hydroTower.idealConditions
-//    hydroTower.getWaterPh()
-//    hydroTower.getPlantCapacity()
-//    hydroTower.getDaysSinceLastPHAdjustment()
-//
-//    hydroTower.adjustWaterPH(5.8f)
-//    //hydroTower.harvest()
-//    hydroTower.adjustEnvironment(22.0f, 2.1f)
+    val manager = VerticalFarmManager()
+    manager.addModule(ar)
+    manager.addModule(agua)
+    manager.addModule(soil)
 
-    val aeroBed = AeroponicBed("A-01", LocalDate.now())
-    val hydroTower = HydroponicTower("W-01", LocalDate.now(), 120)
-    val soilTable = SoilGrowTable("S-01", LocalDate.now(), "Vermiculite")
-
-    val modulosManager = VerticalFarmManager()
-    modulosManager.addModule(aeroBed)
-    modulosManager.addModule(hydroTower)
-    modulosManager.addModule(soilTable)
-    modulosManager.optimizeClimate(30f, 5f)
-
-    modulosManager.performDailyTasks()
-
+    manager.optimizeClimate(22f, 5f)
+    manager.performDailyTasks()
 }

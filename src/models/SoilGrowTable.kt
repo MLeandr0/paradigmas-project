@@ -1,8 +1,6 @@
 package models
 
 import java.time.LocalDate
-import kotlin.math.max
-import kotlin.math.min
 
 class SoilGrowTable(
     id: String,
@@ -54,7 +52,7 @@ class SoilGrowTable(
             "Plants not ready (stage $growthStage)"
         }
 
-        println("Harvesting fruiting plants with care")
+        println("Harvesting fruiting plants")
     }
 
     private fun validateSoilType(type: String): String {
