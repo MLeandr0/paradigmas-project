@@ -12,9 +12,13 @@ class AeroponicBed(
     private var _nutrientBoost: Boolean = false
     private var _lastMaintenance: LocalDate = plantingDate
 
+    override val idealConditions: String = "18-22°C, 70-80% humidity, high oxygenation"
+
     fun getMistingInterval(): Int = _mistingInterval
 
     fun getNutrientBoost(): Boolean = _nutrientBoost
+
+    fun getIdealConditions(): String = idealConditions
 
     fun getDaysSinceMaintenance(): Long {
         return LocalDate.now().toEpochDay() - _lastMaintenance.toEpochDay()
@@ -32,18 +36,9 @@ class AeroponicBed(
         _nutrientBoost = active
     }
 
-    override fun adjustEnvironment(temp: Float, humidity: Float) {
-        println("Ajustando névoa para ${"%.1f".format(temp)}°C")
-        autoAdjustMisting(temp)
-    }
-
-    override val idealConditions: String
-        get() = "18-22°C, 70-80% humidity, high oxygenation"
-
     fun activateNutrientBoost(hours: Int) {
         setNutrientBoost(true)
         println("Boost ativado por $hours horas")
-        // Lógica de desativação automática
     }
 
     private fun autoAdjustMisting(temp: Float) {
@@ -60,5 +55,10 @@ class AeroponicBed(
         }
         println("Harvesting root vegetables with robotic arms")
         _lastMaintenance = LocalDate.now()
+    }
+
+    override fun adjustEnvironment(temp: Float, humidity: Float) {
+        println("Ajustando névoa para ${"%.1f".format(temp)}°C")
+        autoAdjustMisting(temp)
     }
 }
