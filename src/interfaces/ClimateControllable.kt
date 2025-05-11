@@ -1,6 +1,6 @@
 package interfaces
 
 interface ClimateControllable {
-    val idealConditions: String  // Property in interface
+    val idealConditions: String
     fun adjustEnvironment(temperature: Float, humidity: Float)
 }

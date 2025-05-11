@@ -4,41 +4,26 @@ import interfaces.ClimateControllable
 import java.time.LocalDate
 
 class AeroponicBed(
-    private val id: String,
-    private val plantingDate: LocalDate
+    val id: String,
+    val plantingDate: LocalDate
 ) : CultivationModule(id, plantingDate), ClimateControllable {
 
     private var _mistingInterval: Int = 5
-    private var _nutrientBoost: Boolean = false
+    private val _idealConditions: String = "18-22°C, 70-80% humidity, high oxygenation"
     private var _lastMaintenance: LocalDate = plantingDate
-
-    override val idealConditions: String = "18-22°C, 70-80% humidity, high oxygenation"
 
     fun getMistingInterval(): Int = _mistingInterval
 
-    fun getNutrientBoost(): Boolean = _nutrientBoost
-
-    fun getIdealConditions(): String = idealConditions
+    override val idealConditions: String
+        get() = _idealConditions
 
     fun getDaysSinceMaintenance(): Long {
         return LocalDate.now().toEpochDay() - _lastMaintenance.toEpochDay()
     }
 
     fun setMistingInterval(minutes: Int) {
-        require(minutes in 1..15) { "Intervalo deve ser entre 1-15 minutos" }
+        require(minutes in 1..15) { "Interval must be between 1-15 minutes" }
         _mistingInterval = minutes
-    }
-
-    fun setNutrientBoost(active: Boolean) {
-        if (active) {
-            require(!_nutrientBoost) { "Boost já está ativo" }
-        }
-        _nutrientBoost = active
-    }
-
-    fun activateNutrientBoost(hours: Int) {
-        setNutrientBoost(true)
-        println("Boost ativado por $hours horas")
     }
 
     private fun autoAdjustMisting(temp: Float) {
@@ -58,7 +43,7 @@ class AeroponicBed(
     }
 
     override fun adjustEnvironment(temp: Float, humidity: Float) {
-        println("Ajustando névoa para ${"%.1f".format(temp)}°C")
+        println("Adjusting mist for ${"%.1f".format(temp)}°C environment")
         autoAdjustMisting(temp)
     }
 }

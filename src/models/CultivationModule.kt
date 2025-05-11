@@ -3,8 +3,8 @@ package models
 import java.time.LocalDate
 
 abstract class CultivationModule(
-    val moduleId: String,
-    val plantingDate: LocalDate
+    private val moduleId: String,
+    private val plantingDate: LocalDate
 ) {
     var growthStage: Int = 0
         protected set
