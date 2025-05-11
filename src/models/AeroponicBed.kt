@@ -8,26 +8,25 @@ class AeroponicBed(
     val plantingDate: LocalDate
 ) : CultivationModule(id, plantingDate), ClimateControllable {
 
-    private var _mistingInterval: Int = 5
-    private val _idealConditions: String = "18-22°C, 70-80% humidity, high oxygenation"
-    private var _lastMaintenance: LocalDate = plantingDate
+    private var mistingInterval: Int = 5
+    private var lastMaintenance: LocalDate = plantingDate
 
     override val idealConditions: String
-        get() = _idealConditions
+        get() = "18-22°C, 70-80% humidity, high oxygenation"
 
-    fun getMistingInterval(): Int = _mistingInterval
+    fun getMistingInterval(): Int = mistingInterval
 
     fun getDaysSinceMaintenance(): Long {
-        return LocalDate.now().toEpochDay() - _lastMaintenance.toEpochDay()
+        return LocalDate.now().toEpochDay() - lastMaintenance.toEpochDay()
     }
 
     fun setMistingInterval(minutes: Int) {
         require(minutes in 1..15) { "Interval must be between 1-15 minutes" }
-        _mistingInterval = minutes
+        mistingInterval = minutes
     }
 
     private fun autoAdjustMisting(temp: Float) {
-        _mistingInterval = when {
+        mistingInterval = when {
             temp > 28f -> 2
             temp > 25f -> 3
             else -> 5
@@ -39,7 +38,7 @@ class AeroponicBed(
             "Plants not ready for harvest (stage $growthStage)"
         }
         println("Harvesting root vegetables with robotic arms")
-        _lastMaintenance = LocalDate.now()
+        lastMaintenance = LocalDate.now()
     }
 
     override fun adjustEnvironment(temp: Float, humidity: Float) {

@@ -9,24 +9,23 @@ class HydroponicTower(
     plantCapacity: Int
 ) : CultivationModule(id, plantingDate), ClimateControllable {
 
-    private var _waterPH: Float = 6.0f
-    private var _plantCapacity: Int = plantCapacity
-    private var _lastPHAdjustment: LocalDate? = null
-    private var _idealConditions: String = "20-25°C, 65-75% humidity, pH 5.5-6.5"
+    private var waterPH: Float = 6.0f
+    private var plantCapacity: Int = plantCapacity
+    private var lastPHAdjustment: LocalDate? = null
 
     override val idealConditions: String
-        get() = _idealConditions
+        get() = "20-25°C, 65-75% humidity, pH 5.5-6.5"
 
     fun getWaterPh(): Float {
-        return _waterPH
+        return waterPH
     }
 
     fun getPlantCapacity(): Int {
-        return _plantCapacity
+        return plantCapacity
     }
 
     fun getDaysSinceLastPHAdjustment(): Long? {
-        return _lastPHAdjustment?.let {
+        return lastPHAdjustment?.let {
             LocalDate.now().toEpochDay() - it.toEpochDay()
         }
     }
@@ -46,8 +45,8 @@ class HydroponicTower(
         require(newPH in 5.5f..6.5f) {
             "pH must be between 5.5 and 6.5 (provided: $newPH)"
         }
-        _waterPH = newPH
-        _lastPHAdjustment = LocalDate.now()
+        waterPH = newPH
+        lastPHAdjustment = LocalDate.now()
         println("Water pH successfully adjusted to: ${"%.1f".format(newPH)}")
     }
 
@@ -55,14 +54,14 @@ class HydroponicTower(
         require(growthStage >= 4) {
             "Plants not ready for harvest (current stage: $growthStage)"
         }
-        println("Harvesting $_plantCapacity leafy greens via automated conveyor")
+        println("Harvesting $plantCapacity leafy greens via automated conveyor")
     }
 
     private fun autoAdjustPHBasedOnTemp(temp: Float) {
-        _waterPH = when {
-            temp > 24f -> (_waterPH - 0.1f).coerceAtLeast(5.5f)
-            temp < 21f -> (_waterPH + 0.1f).coerceAtMost(6.5f)
-            else -> _waterPH
+        waterPH = when {
+            temp > 24f -> (waterPH - 0.1f).coerceAtLeast(5.5f)
+            temp < 21f -> (waterPH + 0.1f).coerceAtMost(6.5f)
+            else -> waterPH
         }
     }
 }
