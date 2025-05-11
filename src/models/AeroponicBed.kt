@@ -12,10 +12,10 @@ class AeroponicBed(
     private val _idealConditions: String = "18-22°C, 70-80% humidity, high oxygenation"
     private var _lastMaintenance: LocalDate = plantingDate
 
-    fun getMistingInterval(): Int = _mistingInterval
-
     override val idealConditions: String
         get() = _idealConditions
+
+    fun getMistingInterval(): Int = _mistingInterval
 
     fun getDaysSinceMaintenance(): Long {
         return LocalDate.now().toEpochDay() - _lastMaintenance.toEpochDay()

@@ -2,8 +2,6 @@ package models
 
 import interfaces.ClimateControllable
 import java.time.LocalDate
-import kotlin.math.max
-import kotlin.math.min
 
 class HydroponicTower(
     id: String,
@@ -14,20 +12,24 @@ class HydroponicTower(
     private var _waterPH: Float = 6.0f
     private var _plantCapacity: Int = plantCapacity
     private var _lastPHAdjustment: LocalDate? = null
-
-    val waterPH: Float
-        get() = _waterPH
-
-    val plantCapacity: Int
-        get() = _plantCapacity
-
-    val daysSinceLastPHAdjustment: Long?
-        get() = _lastPHAdjustment?.let {
-            LocalDate.now().toEpochDay() - it.toEpochDay()
-        }
+    private var _idealConditions: String = "20-25°C, 65-75% humidity, pH 5.5-6.5"
 
     override val idealConditions: String
-        get() = "20-25°C, 65-75% humidity, pH 5.5-6.5"
+        get() = _idealConditions
+
+    fun getWaterPh(): Float {
+        return _waterPH
+    }
+
+    fun getPlantCapacity(): Int {
+        return _plantCapacity
+    }
+
+    fun getDaysSinceLastPHAdjustment(): Long? {
+        return _lastPHAdjustment?.let {
+            LocalDate.now().toEpochDay() - it.toEpochDay()
+        }
+    }
 
     override fun adjustEnvironment(temp: Float, humidity: Float) {
         val adjustedTemp = temp.coerceIn(20f, 25f)
@@ -53,7 +55,7 @@ class HydroponicTower(
         require(growthStage >= 4) {
             "Plants not ready for harvest (current stage: $growthStage)"
         }
-        println("Harvesting $plantCapacity leafy greens via automated conveyor")
+        println("Harvesting $_plantCapacity leafy greens via automated conveyor")
     }
 
     private fun autoAdjustPHBasedOnTemp(temp: Float) {
